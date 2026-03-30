@@ -1,10 +1,9 @@
-name: Tourism MLOps Pipeline
+name: MLOps Pipeline
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   train-and-deploy:
@@ -12,16 +11,13 @@ jobs:
 
     env:
       HF_TOKEN: ${{ secrets.HF_TOKEN }}
-      HF_DATASET_REPO_ID: nittygritty2106/travel-prediction-dataset
-      HF_MODEL_REPO_ID: nittygritty2106/travelpredictionmlops
-      HF_SPACE_REPO_ID: nittygritty2106/travelpredictionmlops-app
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
@@ -30,10 +26,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run training pipeline
+      - name: Run training script
         run: |
           python train.py
 
-      - name: Deploy app to Hugging Face Space
+      - name: Deploy to Hugging Face Space
         run: |
-          python deploy_to_hf_space.py
+          python deploytohfspace.py
