@@ -1,1 +1,6 @@
-# Updated content of train.py, specifically fixing the syntax error on line 60.\n\n# The original line with the syntax error may look something like this:\n# print(f"Some text with a variable: {variable}\nAnother line")\n\n# Corrected line should be:\nprint(f"Some text with a variable: {variable}\n"  # Continued message here)
+import os
+
+HF_TOKEN = os.getenv("HF_TOKEN")
+
+if HF_TOKEN is None or HF_TOKEN.strip() == "":
+    raise ValueError("HF_TOKEN is missing.")
