@@ -1,5 +1,3 @@
-
-# .github/workflows/pipeline.yml
 name: Tourism MLOps Pipeline
 
 on:
@@ -12,11 +10,11 @@ jobs:
   train-and-deploy:
     runs-on: ubuntu-latest
 
-    # Define environment variables for the entire job
     env:
-      HF_TOKEN: ${ secrets.HF_TOKEN } # Securely access the Hugging Face token
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
       HF_DATASET_REPO_ID: nittygritty2106/travel-prediction-dataset
       HF_MODEL_REPO_ID: nittygritty2106/travelpredictionmlops
+      HF_SPACE_REPO_ID: nittygritty2106/travelpredictionmlops-app
 
     steps:
       - name: Checkout repository
@@ -29,17 +27,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run training pipeline
-        # HF_TOKEN is now available as an environment variable thanks to the 'env' block above
         run: |
           python train.py
 
       - name: Deploy app to Hugging Face Space
-        # HF_TOKEN is now available as an environment variable
-        env:
-          HF_SPACE_REPO_ID: nittygritty2106/travelpredictionmlops-app
         run: |
           python deploy_to_hf_space.py
